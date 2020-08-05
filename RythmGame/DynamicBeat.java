@@ -32,6 +32,8 @@ public class DynamicBeat extends JFrame {
     private  ImageIcon HardButton = new ImageIcon(main.class.getResource("images/HardButton.png"));
     private  ImageIcon EasyButtonClick = new ImageIcon(main.class.getResource("images/EasySelectButton.png"));
     private  ImageIcon HardButtonClick = new ImageIcon(main.class.getResource("images/HardSelectButton.png"));
+    private ImageIcon BackButton = new ImageIcon(main.class.getResource("images/BackButton.png"));
+    private ImageIcon BackButtonClick = new ImageIcon(main.class.getResource("images/BackButtonClick.png"));
     private JButton exitButton = new JButton(exitButtonNonClick);
     private JButton StartButton = new JButton(StartButtonNonClick);
     private JButton EndButton = new JButton(EndButtonNonClick);
@@ -39,6 +41,7 @@ public class DynamicBeat extends JFrame {
     private JButton LeftButton = new JButton(NextButtonL);
     private JButton Easy_Button = new JButton(EasyButton);
     private JButton Hard_Button = new JButton(HardButton);
+    private JButton Back_Button = new JButton(BackButton);
 
 
     private  boolean isMainScreen = false;
@@ -65,7 +68,7 @@ public class DynamicBeat extends JFrame {
 
         trackList.add(new track("Name.png", "Dalmabal.png", "Game.jpg", "Sakuranbo select.mp3", "Sakuranbo.mp3"));
         trackList.add(new track("Name1.png","Travis.png","Game1.jpg", "Stand a Chance_ex.mp3", "Stand a Chance.mp3"));
-        trackList.add(new track("Name2.png", "Yebin.jpg","Game2.jpg","LadySelect.mp3","Lady.mp3"));
+        trackList.add(new track("Name2.png", "Yebin.jpg","Game3.jpg","LadySelect.mp3","LadyFor.mp3"));
 
         exitButton.setBounds(1100,50,30,30);
         exitButton.setBorderPainted(false);
@@ -332,7 +335,42 @@ public class DynamicBeat extends JFrame {
 
         add(Hard_Button);
 
+
+
+        Back_Button.setVisible(false);
+        Back_Button.setBounds(20,60,64,64);
+        Back_Button.setBorderPainted(false);
+        Back_Button.setContentAreaFilled(false);
+        Back_Button.setFocusPainted(false);
+        Back_Button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) { // 마우스가 버튼위에 있을때
+                super.mouseEntered(e);
+                Back_Button.setIcon(BackButtonClick);
+                Back_Button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                Music NonClickButton = new Music("NonClickButton.mp3", false);
+                NonClickButton.start();
+
+            }
+
+            public void mouseExited(MouseEvent e){ // 마우스가 버튼위에서 사라졌을대
+                Back_Button.setIcon(BackButton);
+                Back_Button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e){
+                Music ClickButton = new Music("ClickButton.mp3", false);
+                ClickButton.start();
+                BackMain();
+
+            }
+        });
+
+        add(Back_Button);
+
     }
+
 
     public void paint(Graphics g){ // 가장 첫번째로 화면을 그려주는 함수
         screenImage = createImage(main.SCREEN_WIDTH, main.SCREEN_HEIGHT); // screenImage를 설정
@@ -401,6 +439,20 @@ public class DynamicBeat extends JFrame {
         introBackground = new ImageIcon(main.class.getResource("images/" + trackList.get(nowSelected).getGameImage())).getImage();
         selectMusic =  new Music(trackList.get(nowSelected).getGameMusic(), true);
         selectMusic.start();
+        Back_Button.setVisible(true);
+
+    }
+
+    public void BackMain(){
+        isMainScreen = true;
+        LeftButton.setVisible(true);
+        RightButton.setVisible(true);
+        introBackground = new ImageIcon(main.class.getResource("images/Sakura.jpg")).getImage();
+        Back_Button.setVisible(false);
+        selectTrack(nowSelected);
+
+
+
 
     }
 
