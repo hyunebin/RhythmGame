@@ -19,6 +19,16 @@ public class Game extends Thread {
     private Image SpresK = new ImageIcon(main.class.getResource("images/NoteRoute.png")).getImage();
     private Image SpresL = new ImageIcon(main.class.getResource("images/NoteRoute.png")).getImage();
 
+    private String titleName;
+    private String diffculty;
+    private String MusicTitle;
+
+    public Game(String titleName, String diffculty, String MusicTitle){
+        this.titleName = titleName;
+        this.diffculty = diffculty;
+        this.MusicTitle = MusicTitle;
+    }
+
 
 
     public void screenDraw(Graphics2D g) {
@@ -59,8 +69,8 @@ public class Game extends Thread {
             g.setColor(Color.white);
             g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             g.setFont(new Font("Arial", Font.BOLD,30));
-            g.drawString("Sakuranbo - dalmabal",30,695);
-            g.drawString("EASY",1100,695);
+            g.drawString(titleName,20, 695);
+            g.drawString(diffculty, 1100,695);
             g.drawString("000000",600,695);
             g.drawString("a",240,610);
             g.drawString("s",344,610);
@@ -70,6 +80,8 @@ public class Game extends Thread {
             g.drawString("j",760,610);
             g.drawString("k",864,610);
             g.drawString("l",968,610);
+
+
 
     }
 

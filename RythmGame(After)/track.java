@@ -6,6 +6,7 @@ public class track {
     private String gameImage;// 게임 실행시 이미지
     private String StartMusic;// 게임 선택창 음악
     private String gameMusic;// 해당 곡을 실행했을때 음악
+    private String titleName;
 
 
     public String getTitleImage() {
@@ -48,11 +49,22 @@ public class track {
         this.gameMusic = gameMusic;
     }
 
-    public track(String titleImage, String startImage, String gameImage, String startMusic, String gameMusic) {
+
+    public String getTitleName() {
+        return titleName;
+    }
+
+    public void setTitleName(String titleName) {
+        this.titleName = titleName;
+    }
+
+    public track(String titleImage, String startImage, String gameImage, String startMusic, String gameMusic, String titleName) {
         this.titleImage = titleImage;
         this.startImage = startImage;
         this.gameImage = gameImage;
-        StartMusic = startMusic;
+        this.StartMusic = startMusic;
         this.gameMusic = gameMusic;
+        this.titleName = titleName;
+
     }
 }

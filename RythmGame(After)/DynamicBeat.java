@@ -47,7 +47,7 @@ public class DynamicBeat extends JFrame {
     private  boolean isMainScreen = false;
     private  boolean isGameScreen = false;
 
-   public static Game game = new Game(); // 한번에 한게임만 진행할 수 있음
+   public static Game game; // 한번에 한게임만 진행할 수 있음
 
     ArrayList<track> trackList= new ArrayList<track>();
 
@@ -72,9 +72,9 @@ public class DynamicBeat extends JFrame {
 
         introMusic.start();
 
-        trackList.add(new track("Name.png", "Dalmabal.png", "Game.jpg", "Sakuranbo select.mp3", "Sakuranbo.mp3"));
-        trackList.add(new track("Name1.png","Travis.png","Game1.jpg", "Stand a Chance_ex.mp3", "Stand a Chance.mp3"));
-        trackList.add(new track("Name2.png", "Yebin.jpg","Game3.jpg","LadySelect.mp3","LadyFor.mp3"));
+        trackList.add(new track("Name.png", "Dalmabal.png", "Game.jpg", "Sakuranbo select.mp3", "Sakuranbo.mp3", "사쿠란보"));
+        trackList.add(new track("Name1.png","Travis.png","Game1.jpg", "Stand a Chance_ex.mp3", "Stand a Chance.mp3", "Stand a Chance"));
+        trackList.add(new track("Name2.png", "Yebin.jpg","Game3.jpg","LadySelect.mp3","LadyFor.mp3", "숙녀 - 예빈"));
 
         exitButton.setBounds(1160,0,32,32);
         exitButton.setBorderPainted(false);
@@ -444,7 +444,7 @@ public class DynamicBeat extends JFrame {
         selectMusic.start();
         Back_Button.setVisible(true);
         isGameScreen = true;
-
+        game = new Game(trackList.get(nowSelected).getTitleName(), difficulty,trackList.get(nowSelected).getGameMusic());
     }
 
     public void BackMain(){
