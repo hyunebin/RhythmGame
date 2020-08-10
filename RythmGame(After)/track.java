@@ -49,13 +49,12 @@ public class track {
         this.gameMusic = gameMusic;
     }
 
-
     public String getTitleName() {
         return titleName;
     }
 
     public void setTitleName(String titleName) {
-        this.titleName = titleName;
+        this.titleName = titleName ;
     }
 
     public track(String titleImage, String startImage, String gameImage, String startMusic, String gameMusic, String titleName) {

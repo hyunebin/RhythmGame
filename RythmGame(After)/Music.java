@@ -1,5 +1,7 @@
 package RythmGame;
-
+/*
+Mp3를 실행시켜주는 라이브러리
+ */
 import javazoom.jl.player.Player;
 
 import java.io.BufferedInputStream;

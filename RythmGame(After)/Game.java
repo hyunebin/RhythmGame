@@ -2,6 +2,7 @@ package RythmGame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Game extends Thread {
 
@@ -9,7 +10,6 @@ public class Game extends Thread {
     private Image LineImage = new ImageIcon(main.class.getResource("images/Line.png")).getImage();
     private Image LineRoute = new ImageIcon(main.class.getResource("images/NoteRoute.png")).getImage();
     private Image NoteLine = new ImageIcon(main.class.getResource("images/NoteLine.png")).getImage();
-    private Image Note = new ImageIcon(main.class.getResource("images/Note.png")).getImage();
     private Image SpresA = new ImageIcon(main.class.getResource("images/NoteRoute.png")).getImage();
     private Image SpresS = new ImageIcon(main.class.getResource("images/NoteRoute.png")).getImage();
     private Image SpresD = new ImageIcon(main.class.getResource("images/NoteRoute.png")).getImage();
@@ -19,14 +19,19 @@ public class Game extends Thread {
     private Image SpresK = new ImageIcon(main.class.getResource("images/NoteRoute.png")).getImage();
     private Image SpresL = new ImageIcon(main.class.getResource("images/NoteRoute.png")).getImage();
 
-    private String titleName;
-    private String diffculty;
+    private String titleName; // 현재 실행할 곡의 이름
+    private String diffculty;// 현재 실행한 곡의 난이도
     private String MusicTitle;
+    private Music GameMusic;
 
-    public Game(String titleName, String diffculty, String MusicTitle){
+    ArrayList<NoteFall> NoteList = new ArrayList<NoteFall>();
+
+    public Game(String titleName, String diffculty, String MusicTitle){ // 생성자 형성
         this.titleName = titleName;
         this.diffculty = diffculty;
         this.MusicTitle = MusicTitle;
+        GameMusic = new Music(this.MusicTitle, false);
+
     }
 
 
@@ -42,8 +47,6 @@ public class Game extends Thread {
             g.drawImage(SpresK,824,27,null);
             g.drawImage(SpresL,928,27,null);
 
-
-
             g.drawImage(NoteLine, 196,27,null);
             g.drawImage(NoteLine, 300,27,null);
             g.drawImage(NoteLine, 404,27,null);
@@ -54,17 +57,22 @@ public class Game extends Thread {
             g.drawImage(NoteLine, 924,27,null);
             g.drawImage(NoteLine, 1028,27,null);
 
+
             g.drawImage(LineImage, 0,580, null);
             g.drawImage(GameInfoImage, 0,660, null);
 
-            g.drawImage(Note, 200,300,null);
-            g.drawImage(Note, 304,300,null);
-            g.drawImage(Note, 408,300,null);
-            g.drawImage(Note, 512,300,null);
-            g.drawImage(Note, 616,300,null);
-            g.drawImage(Note, 720,300,null);
-            g.drawImage(Note, 824,300,null);
-            g.drawImage(Note, 928,300,null);
+        for(int i = 0; i < NoteList.size() ;i++){
+            NoteFall note = NoteList.get(i);
+            if(!note.isProceeded()){
+                NoteList.remove(i);
+                i--;
+            }
+
+            else{
+                note.ScreenDraw(g);
+            }
+
+        }
 
             g.setColor(Color.white);
             g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -86,11 +94,13 @@ public class Game extends Thread {
     }
 
     public void PreesA(){
-            SpresA = new ImageIcon(main.class.getResource("images/NoteRoutePress.png")).getImage();
+        judge("a");
+        SpresA = new ImageIcon(main.class.getResource("images/NoteRoutePress.png")).getImage();
     }
 
         public void PreesS(){
-                SpresS = new ImageIcon(main.class.getResource("images/NoteRoutePress.png")).getImage();
+
+        SpresS = new ImageIcon(main.class.getResource("images/NoteRoutePress.png")).getImage();
         }
 
         public void PreesD(){
@@ -153,6 +163,80 @@ public class Game extends Thread {
 
 
     public void run(){
+        dropNote();
+    }
 
+    public void close(){
+        GameMusic.close();
+        interrupt();
+    }
+
+    public void dropNote(){
+        Beat[] beats = null;
+        if (titleName.equals("Sakuranbo - Dalmabal") && diffculty.equals("Easy")){
+            int startTime = 1000 - main.REACH_TIME * 1000;
+            int gap = 125;
+            beats = new Beat[]{
+                    new Beat(startTime + gap * 2, "a"),
+                    new Beat(startTime + gap * 4, "a"),
+                    new Beat(startTime + gap * 6, "a"),
+                    new Beat(startTime + gap * 8, "a"),
+                    new Beat(startTime + gap * 10, "a"),
+            };
+        }
+
+        else if(titleName.equals("Stand a Chance")){
+            int startTime = 1000 - main.REACH_TIME * 1000;
+            int gap = 125;
+            beats = new Beat[]{
+                    new Beat(startTime + gap * 2, "a"),
+                    new Beat(startTime + gap * 4, "a"),
+                    new Beat(startTime + gap * 6, "a"),
+                    new Beat(startTime + gap * 8, "a"),
+                    new Beat(startTime + gap * 10, "a"),
+            };
+        }
+
+        else if(titleName.equals("Lady - Yebin")){
+            int startTime = 1000 - main.REACH_TIME * 1000;
+            beats = new Beat[]{
+                    new Beat(startTime, "d")
+            };
+        }
+
+        int i = 0;
+        GameMusic.start();
+        while(i < beats.length && !isInterrupted()){
+            if(beats[i].getTime() <= GameMusic.getTime()){
+                NoteFall note = new NoteFall(beats[i].getNoteName());
+                note.start();
+                NoteList.add(note);
+                i++;
+            }
+        }
+
+
+
+
+        /*NoteList.add(new NoteFall(200,300,"short"));
+        NoteList.add(new NoteFall (304,300,"short"));
+        NoteList.add(new NoteFall ( 408,300,"short"));
+        NoteList.add(new NoteFall (512,300,"short"));
+        NoteList.add(new NoteFall (616,300,"short"));
+        NoteList.add(new NoteFall (720,300,"short"));
+        NoteList.add(new NoteFall (824,300,"short"));
+        NoteList.add(new NoteFall(928,300,"short"));
+        */
+    }
+
+    public void judge(String in){
+        for(int i = 0; i < NoteList.size(); i++){
+            NoteFall note = NoteList.get(i);
+            if(in.equals(note.NoteType())){
+                note.judge();
+                break;
+            }
+
+        }
     }
 }
